@@ -1,0 +1,193 @@
+<h1>Bem vindo de volta!</h1>
+<p>Procurando por uma vaga?</p>
+
+<h2>Suas sessões cadastradas</h2>
+<p *ngIf="!loadginSessions && userSessions.length === 0">
+  No momento você não tem nenhuma vaga ativa
+</p>
+
+<table border="1" *ngIf="userSessions.length > 0" width="100%">
+  <thead>
+    <tr>
+      <th>Entrada</th>
+      <th>Saída</th>
+      <th>Tempo Total</th>
+      <th>Valor</th>
+      <th>Ativo</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let session of userSessions">
+      <td>{{ session.entryTime | date: 'dd/MM/yyyy HH:mm' }}</td>
+      <td>
+        {{
+          session.exitTime === '0001-01-01T00:00:00'
+            ? '-'
+            : (session.exitTime | date: 'dd/MM/yyyy HH:mm')
+        }}
+      </td>
+      <td>
+        {{
+          session.totalTime === '0001-01-01T00:00:00' ? '-' : (session.totalTime | date: 'HH:mm')
+        }}
+      </td>
+      <td>{{ session.amountChanged | currency: 'BRL' }}</td>
+      <td>
+        <span>
+          {{ session.isActive ? 'Sim' : 'Não' }}
+        </span>
+      </td>
+      <td>
+        <button [disabled]="!session.isActive" (click)="closeSession(session.id)">
+          Fechar Sessão
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="userSessions.length === 0">Nenhuma sessão encontrada.</div>
+
+<hr />
+
+<h2>Seus carros cadastrados</h2>
+<div *ngIf="loading">Carregando lista de carros...</div>
+
+<div *ngIf="!loading && cars.length === 0">Nenhum carro encontrado.</div>
+
+<table *ngIf="!loading" border="1" width="100%">
+  <thead>
+    <tr>
+      <th>Placa</th>
+      <th>Cor</th>
+      <th>Modelo</th>
+      <th>Ativo</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let car of cars">
+      <td>{{ car.licensePlate }}</td>
+      <td>{{ car.color }}</td>
+      <td>{{ car.model }}</td>
+      <td>{{ car.isActive ? 'Sim' : 'Não' }}</td>
+      <td>
+        <button (click)="onEdit(car)">Editar</button>
+        <button (click)="onDelete(car.id)">Deletar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+<h3>Cadastrar novo veículo</h3>
+
+<form [formGroup]="newCarForm" (ngSubmit)="addCar()">
+  <label>Placa:</label>
+  <input type="text" formControlName="licensePlate" />
+
+  <label for="cor">Escolha a cor do carro:</label>
+  <select id="cor" formControlName="color">
+    <option *ngFor="let cor of colors" [value]="cor">
+      {{ cor }}
+    </option>
+  </select>
+
+  <label>Modelo:</label>
+  <input type="text" formControlName="model" />
+
+  <button type="submit">+ Adicionar novo veículo</button>
+</form>
+
+<hr />
+<h3 *ngIf="isEditing">Editar seu veículo</h3>
+
+<form *ngIf="isEditing" [formGroup]="editCarForm" (ngSubmit)="editCar()">
+  <label>Placa:</label>
+  <input type="text" formControlName="licensePlate" />
+
+  <label for="cor">Escolha a cor do carro:</label>
+  <select id="cor" formControlName="color">
+    <option *ngFor="let cor of colors" [value]="cor">
+      {{ cor }}
+    </option>
+  </select>
+
+  <label>Modelo:</label>
+  <input type="text" formControlName="model" />
+
+  <label>
+    Seu carro está ativo:
+    <input type="checkbox" formControlName="isActive" />
+  </label>
+  <button type="submit">+ Editar veículo</button>
+</form>
+<hr />
+
+<h3>Realizar reserva de estacionamento</h3>
+
+<p>Lista de estacionamentos disponíveis</p>
+
+<table *ngIf="!loading" border="1" width="100%">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Endereço</th>
+      <th>Preço (primeira hora)</th>
+      <th>Preço (extra)</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let parking of parkingLots">
+      <td>{{ parking.name }}</td>
+      <td>{{ parking.address }}</td>
+      <td>R$ {{ parking.firstHourAmount }}</td>
+      <td>R$ {{ parking.extraHourAmount }}</td>
+      <td>
+        <button (click)="viewSpaces(parking.id)">Visualizar Vagas</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 *ngIf="showSpaces">Vagas disponíveis</h2>
+<table *ngIf="showSpaces" border="1" width="100%">
+  <thead>
+    <tr>
+      <th>Número</th>
+      <th>Acessível</th>
+      <th>Ativa</th>
+      <th>Ação</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let space of spaces">
+      <td>{{ space.spaceNumber }}</td>
+      <td>{{ space.isAccessibleParkingSpace ? 'Sim' : 'Não' }}</td>
+      <td>{{ space.isActive ? 'Livre' : 'Ocupada' }}</td>
+      <td>
+        <button [disabled]="!space.isActive" (click)="startSession(space.id)">
+          Iniciar sessão
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="showCarSelect">
+  <h3>Selecione um carro</h3>
+
+  <select [(ngModel)]="selectedCarId">
+    <option [value]="null">Selecione</option>
+    <option *ngFor="let car of cars" [value]="car.id">
+      {{ car.licensePlate }}
+    </option>
+  </select>
+
+  <button (click)="createSession()">Confirmar</button>
+</div>

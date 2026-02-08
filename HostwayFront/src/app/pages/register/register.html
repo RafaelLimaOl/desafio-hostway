@@ -1,0 +1,25 @@
+<h2>Registro</h2>
+
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <label>Nome:</label>
+  <input type="text" formControlName="nome" />
+
+  <label>Email:</label>
+  <input type="email" formControlName="email" />
+
+  <label>Senha:</label>
+  <input type="password" formControlName="senha" />
+
+  <label>
+    <input type="checkbox" formControlName="deficiencia" />
+    Possui alguma deficiência?
+  </label>
+
+  <label>Tipo de Usuário:</label>
+  <select formControlName="tipoUsuario">
+    <option value="operator">Operador</option>
+    <option value="admin">Admin</option>
+  </select>
+
+  <button type="submit">Registrar Conta</button>
+</form>

@@ -1,0 +1,73 @@
+<h1>Bem vindo de volta!</h1>
+<p>O que vamos fazer hoje?</p>
+
+<hr />
+
+<h2>Adicione um novo estacionado</h2>
+<!-- <form [formGroup]="newCarForm" (ngSubmit)="addCar()"> -->
+<form [formGroup]="newParkingLotForm" (ngSubmit)="addParkingLot()">
+  <label>Nome:</label>
+  <input type="text" formControlName="name" />
+
+  <label>Endereço:</label>
+  <input type="text" formControlName="address" />
+
+  <label>Valor Primeira hora</label>
+  <input type="number" formControlName="firstHourAmount" />
+
+  <label>Valor Extra por hora</label>
+  <input type="number" formControlName="extraHourAmount" />
+
+  <button type="submit">+ Adicionar novo estacionamento</button>
+</form>
+
+<h2>Seus estacionamentos cadastrados</h2>
+
+<table *ngIf="!loading" border="1" width="100%">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Endereço</th>
+      <th>Preço (primeira hora)</th>
+      <th>Preço (extra)</th>
+      <th>Quantidade de vagas</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let parking of parkingLot">
+      <td>{{ parking.name }}</td>
+      <td>{{ parking.address }}</td>
+      <td>R$ {{ parking.firstHourAmount }}</td>
+      <td>R$ {{ parking.extraHourAmount }}</td>
+      <td>{{ parking.lotsAvaliable }}</td>
+      <td>
+        <button>Editar</button>
+        <button (click)="onDelete(parking.id)">Deletar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Adicionar Vaga para estacionamento</h2>
+
+<form [formGroup]="newSpaceForm" (ngSubmit)="addSpace()">
+  <label>Número da vaga:</label>
+  <input type="number" formControlName="spaceNumber" />
+
+  <label>
+    <input type="checkbox" formControlName="isAccessibleParkingSpace" />
+    Vaga para deficiência:
+  </label>
+
+  <label>Estacionamento</label>
+  <select formControlName="parkingLotId">
+    <option *ngFor="let parking of parkingLot" [value]="parking.id">
+      {{ parking.name }}
+    </option>
+  </select>
+  <button type="submit">+ Adicionar novo estacionamento</button>
+</form>
+
+<hr />

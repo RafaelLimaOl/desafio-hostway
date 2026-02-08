@@ -1,0 +1,124 @@
+/* --bright-blue: oklch(51.01% 0.274 263.83);
+    --electric-violet: oklch(53.18% 0.28 296.97);
+    --french-violet: oklch(47.66% 0.246 305.88);
+    --vivid-pink: oklch(69.02% 0.277 332.77);
+    --hot-red: oklch(61.42% 0.238 15.34);
+    --orange-red: oklch(63.32% 0.24 31.68);
+
+    --gray-900: oklch(19.37% 0.006 300.98);
+    --gray-700: oklch(36.98% 0.014 302.71);
+    --gray-400: oklch(70.9% 0.015 304.04); */
+
+/* .navbar-container {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 0.5rem;
+  background: #2196f3;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.25rem;
+}
+
+.nav-logo {
+  color: white;
+}
+.nav-list {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-item {
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 200ms;
+}
+
+.nav-item:hover {
+  color: gray;
+} */
+
+main {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #e3f2fd;
+  box-sizing: inherit;
+  position: relative;
+}
+
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #101010;
+  text-align: center;
+  padding: 20px;
+}
+
+.hero-content {
+  max-width: 600px;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.action-items {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+.action-items button {
+  position: relative;
+  overflow: hidden;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.3s;
+}
+
+.btn-login {
+  background-color: #2196f3;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.btn-register {
+  background-color: #ffffff;
+  color: black;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-login:hover {
+  opacity: 0.9;
+}
