@@ -14,7 +14,7 @@ public class DashRepository(IDbConnection dbConnection) : IDashRepository
             SELECT
                 DATE(ExitTime) AS Day,
                 SUM(AmountChanged) AS TotalAmount
-            FROM ParkingSession
+            FROM ParkingSessions
             WHERE ExitTime IS NOT NULL
               AND ExitTime >= DATE('now', '-' || @days || ' day')
             GROUP BY DATE(ExitTime)
@@ -31,8 +31,8 @@ public class DashRepository(IDbConnection dbConnection) : IDashRepository
                     (julianday(COALESCE(ps.ExitTime, CURRENT_TIMESTAMP)) -
                      julianday(ps.EntryTime)) * 24 * 60
                 ) AS TotalMinutes
-            FROM ParkingSession ps
-            JOIN Car c ON c.Id = ps.CarId
+            FROM ParkingSessions ps
+            JOIN Cars c ON c.Id = ps.CarId
             WHERE ps.EntryTime >= @startDate
               AND ps.EntryTime <= @endDate
             GROUP BY c.Id, c.LicensePlate
@@ -56,7 +56,7 @@ public class DashRepository(IDbConnection dbConnection) : IDashRepository
                 h AS Hour,
                 COUNT(ps.Id) AS Occupancy
             FROM hours
-            LEFT JOIN ParkingSession ps
+            LEFT JOIN ParkingSessions ps
                 ON ps.EntryTime <= h
                AND (ps.ExitTime IS NULL OR ps.ExitTime > h)
             GROUP BY h
